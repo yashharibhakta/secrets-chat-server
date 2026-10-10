@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Secrets — Private Chat</title>
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f5f4f8;background:#111014;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 15% 0%,#30233a 0,transparent 38%),radial-gradient(ellipse at 100% 100%,#1b2c2b 0,transparent 32%),#111014}
+button,input{font:inherit}button{cursor:pointer;border:0;border-radius:13px;padding:12px 16px;background:#d9f379;color:#1a2110;font-weight:750;transition:transform .18s,filter .18s}button:hover{filter:brightness(1.06);transform:translateY(-1px)}button:disabled{opacity:.4;cursor:not-allowed;transform:none}
+input{width:100%;padding:14px 15px;border-radius:13px;border:1px solid #3b3742;background:#19171d;color:#fff;outline:none;transition:border-color .2s,box-shadow .2s}input:focus{border-color:#d9f379;box-shadow:0 0 0 3px #d9f37918}
+small,.muted{color:#a9a3b1}.shell{max-width:1160px;margin:auto;padding:28px 24px}.brand{font-size:1.65rem;font-weight:850;letter-spacing:-.06em;position:relative;padding-left:34px}.brand>span:not(.brand-mark){color:#d9f379}.brand-mark{position:absolute;left:0;top:1px;width:25px;height:25px;display:grid;place-items:center;background:#d9f379;color:#1a2110;border-radius:9px;font-size:15px;letter-spacing:0}.brand-period{color:#d9f379}.brand-tagline{font-size:.72rem;font-weight:450;letter-spacing:.01em;color:#8e8796;margin-top:3px}
+.panel{border:1px solid #302c35;background:linear-gradient(145deg,#1c1a21f5,#17151bf5);border-radius:24px;padding:22px;box-shadow:0 24px 70px #0002}.auth{max-width:440px;margin:9vh auto;padding:32px}.stack{display:grid;gap:13px}.row{display:flex;gap:10px;align-items:center}.layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:17px;margin-top:30px;align-items:stretch}
+#people{display:grid;gap:8px;margin-top:20px}.person{text-align:left;background:transparent;color:#f5f4f8;border:1px solid transparent;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px;border-radius:15px;min-width:0}.person:hover{background:#26232c;transform:none}.person.active{border-color:#484b35;background:#2a2c24}.person>span:first-child{display:flex;align-items:center;min-width:0;overflow-wrap:anywhere}.person>span:first-child:before{content:"";width:37px;height:37px;flex:0 0 37px;border-radius:13px;background:linear-gradient(145deg,#393244,#24212b);margin-right:11px;display:inline-block}.dot{width:8px;height:8px;border-radius:50%;display:inline-block;background:#6f6977;margin-right:7px;flex:0 0 auto}.dot.on{background:#d9f379;box-shadow:0 0 0 3px #d9f37920}.chat{min-height:69vh;display:flex;flex-direction:column;padding:24px 26px}.chathead{display:flex;align-items:center;gap:12px;padding-bottom:20px;border-bottom:1px solid #302c35}.peer-avatar{width:43px;height:43px;display:grid;place-items:center;border-radius:15px;background:#d9f379;color:#1a2110;font-size:20px}.peer-meta{min-width:0;flex:1}.peer-meta strong{font-size:1.03rem}.peer-meta .muted{font-size:.8rem;margin-top:4px}.secure-pill{font-size:.75rem;color:#d9f379;border:1px solid #414633;border-radius:999px;padding:7px 10px;white-space:nowrap}.secure-pill i{display:inline-block;width:6px;height:6px;background:#d9f379;border-radius:50%;margin-right:5px}.messages{flex:1;display:flex;flex-direction:column;gap:12px;padding:24px 0;overflow:auto;max-height:56vh;scroll-behavior:smooth}.bubble{max-width:min(78%,520px);padding:13px 15px;border-radius:18px 18px 18px 5px;background:#292630;border:1px solid #37323d;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5;animation:pop .2s ease-out}.bubble.mine{align-self:flex-end;background:#d9f379;color:#202414;border-color:#d9f379;border-radius:18px 18px 5px 18px}.bubble .time{font-size:.68rem;color:#aaa3b2;margin-top:7px}.bubble.mine .time{color:#535b3c}.composer{display:flex;gap:10px;padding-top:14px;border-top:1px solid #302c35;align-items:center}.composer input{flex:1;border-radius:15px;padding:15px 17px}.composer button{min-width:86px}.notice{font-size:.82rem;color:#a9a3b1;line-height:1.6}.status{min-height:22px;color:#c2c6ae;font-size:.85rem;padding-top:5px}.hidden{display:none!important}.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.topUser{font-size:.85rem}.eyebrow{font-size:.7rem;letter-spacing:.18em;font-weight:800;color:#d9f379;margin:22px 0 7px}.auth h2{font-size:1.9rem;letter-spacing:-.05em;margin:0 0 9px}.auth-icon{width:52px;height:52px;display:grid;place-items:center;border-radius:18px;background:#d9f379;color:#1a2110;font-size:25px}.auth a{color:#d9f379!important;text-decoration:none}.auth a:hover{text-decoration:underline}.section-heading{display:flex;align-items:center;gap:9px}.count-pill{font-size:.72rem;color:#d9f379;background:#32352a;border-radius:99px;padding:3px 8px}.aside-note{margin-top:24px;padding-top:16px;border-top:1px solid #302c35}.empty-state{margin:auto;text-align:center;color:#a9a3b1;padding:40px 10px}.empty-state h3{color:#f5f4f8;font-size:1.15rem;margin:18px 0 8px;letter-spacing:-.03em}.empty-state p{line-height:1.7;font-size:.9rem}.empty-orbit{width:72px;height:72px;margin:auto;border-radius:25px;background:#272a21;color:#d9f379;display:grid;place-items:center;font-size:31px;box-shadow:0 0 0 12px #d9f37908;animation:float 3s ease-in-out infinite}.chathead+.messages:empty{display:grid}.person small{white-space:nowrap;font-size:.72rem}
+@keyframes pop{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@media(max-width:760px){.shell{padding:18px 12px}.layout{grid-template-columns:1fr;margin-top:22px}.panel{padding:17px;border-radius:20px}.auth{margin:6vh auto;padding:25px}.chat{min-height:58vh;padding:18px}.messages{max-height:42vh}.secure-pill{display:none}.bubble{max-width:88%}.brand{font-size:1.5rem}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="top"><div class="brand"><span class="brand-mark">✦</span> secrets<span class="brand-period">.</span><div class="brand-tagline">a little space, just for you</div></div><div id="topUser" class="muted"></div></div>
+  <section id="auth" class="panel auth">
+    <div class="auth-icon">✦</div><p class="eyebrow">YOUR PRIVATE CORNER</p><h2 id="authTitle">Welcome back</h2>
+    <p class="notice">A quieter place for conversations that matter. Sign in to pick up where you left off.</p>
+    <form id="authForm" class="stack">
+      <input id="username" autocomplete="username" placeholder="Username (3–24 letters/numbers/_)" required minlength="3" maxlength="24" pattern="[A-Za-z0-9_]+">
+      <input id="password" type="password" autocomplete="current-password" placeholder="Password (at least 12 characters)" required minlength="12" maxlength="200">
+      <button id="authSubmit">Log in</button>
+    </form>
+    <p class="muted">New here? <a href="#" id="toggleAuth" style="color:#aebaff">Create an account</a></p>
+    <div id="authStatus" class="status" role="status"></div>
+  </section>
+  <section id="app" class="layout hidden">
+    <aside class="panel">
+      <div class="top"><strong class="section-heading">Messages <span class="count-pill" id="peopleCount">0</span></strong><button id="logout" style="padding:8px 10px">Log out</button></div>
+      <p class="notice">Your people, all in one place. Share your username with someone you trust to start a conversation.</p>
+      <div id="people"></div><div id="peopleStatus" class="status"></div>
+    </aside>
+    <main class="panel chat">
+      <div class="chathead"><div class="peer-avatar" id="peerAvatar">✦</div><div class="peer-meta"><strong id="peerTitle">Choose a person</strong><div id="peerStatus" class="muted">Select someone to say hello</div></div><span class="secure-pill"><i></i> private chat</span></div>
+      <div id="messages" class="messages"><div class="empty-state"><div class="empty-orbit">✦</div><h3>Your space to connect</h3><p>Choose a conversation on the left<br>or create an account with a friend.</p></div></div>
+      <form id="composer" class="composer"><input id="messageInput" placeholder="Write a message…" maxlength="3000" autocomplete="off" disabled><button id="sendBtn" disabled>Send</button></form>
+      <div class="status" id="chatStatus" role="status"></div>
+    </main>
+  </section>
+  <p class="notice" style="max-width:800px;margin:18px auto">Secrets is a prototype. Encryption has not been independently audited; don’t use it for high-risk conversations. Online status and message timing may be visible to the server.</p>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+let mode = "login", me = null, csrf = "", peer = null, people = [], keyPair = null, refreshTimer = null;
+const b64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const json = (url, opts={}) => fetch(url, {credentials:"same-origin", ...opts});
+async function api(url, method="GET", body=null) {
+  const headers = {};
+  if (body !== null) headers["Content-Type"] = "application/json";
+  if (method !== "GET") headers["X-CSRF-Token"] = csrf;
+  const r = await json(url,{method,headers,body:body===null?undefined:JSON.stringify(body)});
+  const data = await r.json().catch(()=>({}));
+  if (!r.ok) throw new Error(data.error || `Request failed (${r.status})`);
+  return data;
+}
+function status(id,msg){$(id).textContent=msg||""}
+function showAuth(){ $("auth").classList.remove("hidden"); $("app").classList.add("hidden"); $("topUser").textContent=""; }
+function showApp(){ $("auth").classList.add("hidden"); $("app").classList.remove("hidden"); $("topUser").textContent=me; }
+$("toggleAuth").onclick=e=>{e.preventDefault();mode=mode==="login"?"register":"login";$("authTitle").textContent=mode==="login"?"Welcome back":"Create your account";$("authSubmit").textContent=mode==="login"?"Log in":"Create account";$("password").autocomplete=mode==="login"?"current-password":"new-password";$("toggleAuth").textContent=mode==="login"?"Create an account":"I already have an account";status("authStatus","");};
+async function loadKeys(){
+  const stored=localStorage.getItem("secrets-keypair:"+me);
+  if(stored){
+    try { const j=JSON.parse(stored); keyPair={privateKey:await crypto.subtle.importKey("jwk",j.privateKey,{name:"RSA-OAEP",hash:"SHA-256"},false,["decrypt"]),publicKey:await crypto.subtle.importKey("jwk",j.publicKey,{name:"RSA-OAEP",hash:"SHA-256"},true,["encrypt"]),publicJwk:j.publicKey}; return; } catch(e){localStorage.removeItem("secrets-keypair:"+me);}
+  }
+  const pair=await crypto.subtle.generateKey({name:"RSA-OAEP",modulusLength:3072,publicExponent:new Uint8Array([1,0,1]),hash:"SHA-256"},true,["encrypt","decrypt"]);
+  const privateKey=await crypto.subtle.exportKey("jwk",pair.privateKey), publicJwk=await crypto.subtle.exportKey("jwk",pair.publicKey);
+  localStorage.setItem("secrets-keypair:"+me,JSON.stringify({privateKey,publicKey:publicJwk}));
+  keyPair={privateKey:pair.privateKey,publicKey:pair.publicKey,publicJwk};
+  await api("/api/key","POST",{publicKey:JSON.stringify(publicJwk)});
+}
+async function ensurePublicKeyUploaded(){
+  if(!keyPair) await loadKeys();
+  await api("/api/key","POST",{publicKey:JSON.stringify(keyPair.publicJwk)});
+}
+$("authForm").onsubmit=async e=>{
+  e.preventDefault();status("authStatus","Working…");
+  const username=$("username").value.trim(),password=$("password").value;
+  try{
+    const d=await api("/api/"+mode,"POST",{username,password});
+    me=d.username;csrf=d.csrf;
+    await loadKeys(); await ensurePublicKeyUploaded();
+    showApp(); await heartbeat(); await loadPeople();
+    if(refreshTimer)clearInterval(refreshTimer);
+    refreshTimer=setInterval(()=>{heartbeat().catch(()=>{});loadPeople().catch(()=>{});if(peer)loadMessages().catch(()=>{});},5000);
+  }catch(err){status("authStatus",err.message);}
+};
+async function heartbeat(){await api("/api/heartbeat","POST",{});}
+async function loadPeople(){
+  const d=await api("/api/users");people=d.users;
+  $("people").innerHTML="";$("peopleCount").textContent=people.length;
+  for(const p of people){
+    const btn=document.createElement("button");btn.className="person"+(peer===p.username?" active":"");
+    const left=document.createElement("span");const dot=document.createElement("i");dot.className="dot"+(p.online?" on":"");left.append(dot,document.createTextNode(p.username));
+    const right=document.createElement("small");right.textContent=p.online?"online":"offline";
+    btn.append(left,right);btn.onclick=()=>selectPeer(p.username);$("people").append(btn);
+  }
+  status("peopleStatus",people.length?"":"No other accounts yet. Create a second account in another browser.");
+}
+async function selectPeer(name){peer=name;$("peerTitle").textContent=name;$("peerStatus").textContent="Encrypted direct messages";$("messageInput").disabled=false;$("sendBtn").disabled=false;await loadPeople();await loadMessages();}
+async function importPeerKey(p){
+  if(!p || !p.publicKey) throw new Error("This person has not registered an encryption key yet.");
+  return crypto.subtle.importKey("jwk",JSON.parse(p.publicKey),{name:"RSA-OAEP",hash:"SHA-256"},false,["encrypt"]);
+}
+async function encryptFor(text, recipientKey, selfKey){
+  const aes=await crypto.subtle.generateKey({name:"AES-GCM",length:256},true,["encrypt","decrypt"]);
+  const iv=crypto.getRandomValues(new Uint8Array(12));
+  const ciphertext=await crypto.subtle.encrypt({name:"AES-GCM",iv},aes,new TextEncoder().encode(text));
+  const raw=await crypto.subtle.exportKey("raw",aes);
+  const [wrappedRecipientKey,wrappedSenderKey]=await Promise.all([
+    crypto.subtle.encrypt({name:"RSA-OAEP"},recipientKey,raw),
+    crypto.subtle.encrypt({name:"RSA-OAEP"},selfKey,raw)
+  ]);
+  return {ciphertext:b64(ciphertext),iv:b64(iv),wrappedRecipientKey:b64(wrappedRecipientKey),wrappedSenderKey:b64(wrappedSenderKey)};
+}
+async function decryptMessage(m){
+  const wrapped=(m.sender===me)?m.wrappedSenderKey:m.wrappedRecipientKey;
+  const raw=await crypto.subtle.decrypt({name:"RSA-OAEP"},keyPair.privateKey,unb64(wrapped));
+  const aes=await crypto.subtle.importKey("raw",raw,{name:"AES-GCM"},false,["decrypt"]);
+  const plain=await crypto.subtle.decrypt({name:"AES-GCM",iv:unb64(m.iv)},aes,unb64(m.ciphertext));
+  return new TextDecoder().decode(plain);
+}
+$("composer").onsubmit=async e=>{
+  e.preventDefault();const text=$("messageInput").value.trim();if(!text||!peer)return;
+  $("sendBtn").disabled=true;status("chatStatus","Encrypting and sending…");
+  try{
+    const target=people.find(p=>p.username===peer);
+    const recipientKey=await importPeerKey(target);
+    const payload=await encryptFor(text,recipientKey,keyPair.publicKey);
+    await api("/api/messages","POST",{recipient:peer,...payload});
+    $("messageInput").value="";status("chatStatus","Sent.");await loadMessages();
+  }catch(err){status("chatStatus",err.message);}
+  finally{$("sendBtn").disabled=false;}
+};
+async function loadMessages(){
+  if(!peer)return;
+  const d=await api("/api/messages/"+encodeURIComponent(peer));const area=$("messages");area.innerHTML="";
+  for(const m of d.messages){
+    const wrap=document.createElement("div");wrap.className="bubble"+(m.sender===me?" mine":"");
+    let content;
+    try{content=await decryptMessage(m);}catch(e){content="Unable to decrypt this message on this device.";}
+    const body=document.createElement("div");body.textContent=content;
+    const time=document.createElement("div");time.className="time";time.textContent=(m.sender===me?"You":m.sender)+" · "+new Date(m.createdAt*1000).toLocaleString();
+    wrap.append(body,time);area.append(wrap);
+  }
+  if(!d.messages.length){const p=document.createElement("p");p.className="muted";p.textContent="No messages yet. Say hello.";area.append(p);}
+  area.scrollTop=area.scrollHeight;
+}
+$("logout").onclick=async()=>{try{await api("/api/logout","POST",{});}catch(e){}if(refreshTimer)clearInterval(refreshTimer);me=null;peer=null;csrf="";keyPair=null;showAuth();};
+(async()=>{
+ try{const d=await (await json("/api/me")).json();if(d.loggedIn){me=d.username;csrf=d.csrf;await loadKeys();await ensurePublicKeyUploaded();showApp();await loadPeople();await heartbeat();refreshTimer=setInterval(()=>{heartbeat().catch(()=>{});loadPeople().catch(()=>{});if(peer)loadMessages().catch(()=>{});},5000);}}
+ catch(e){console.warn(e);}
+})();
+</script>
+</body></html>
